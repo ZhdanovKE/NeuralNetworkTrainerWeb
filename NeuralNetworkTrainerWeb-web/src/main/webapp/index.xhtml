@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core" 
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <h:head>
+        <title>Neural Network Trainer</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
+    </h:head>
+    <h:body>
+        Network: 
+        <nav>
+            <a href="#">Create</a> | 
+            <a href="#">Load</a> | 
+            <a href="#">View/Change</a> |
+            <a href="#">Train</a> | 
+            <a href="#">Test</a> | 
+            <a href="#">Save</a>
+        </nav>
+        Samples: 
+        <nav>
+            <a href="#">Load</a> | 
+            <a href="#">View/Change</a>
+        </nav>
+        <div style="text-align: center">
+            <h1>Welcome to the Neural Network Trainer!</h1>
+        </div>
+        
+        <table style="width: 100%;">
+            <tr>
+                <td>Here's the list of networks:</td>
+                <td>Here's the list of samples:</td>
+            </tr>
+            <tr>
+                <td>
+                    <ul id="networksList">
+                        <c:if test="#{networkListBean.networks.size() == 0}">
+                            <li>No networks</li>
+                        </c:if>
+                        <c:otherwise>
+                            <c:forEach items="#{networkListBean.networks}" var="network">
+                                <li>#{network.toString()}</li>
+                            </c:forEach>
+                        </c:otherwise>
+                        
+                    </ul>
+                </td>
+                <td>
+                    <ul id="samplesList">
+                        <c:if test="#{samplesListBean.samples.size() == 0}">
+                            <li>No Samples</li>
+                        </c:if>
+                        <c:otherwise>
+                            <c:forEach items="#{samplesListBean.samples}" var="samples">
+                                <li>#{samples.toString()}</li>
+                            </c:forEach>
+                        </c:otherwise>
+                    </ul>
+                </td>
+            </tr>
+        </table>
+        
+    </h:body>
+</html>

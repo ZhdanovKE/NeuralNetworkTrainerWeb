@@ -1,9 +1,10 @@
 package neuralnetwork.trainerweb.bean;
 
-import java.util.Arrays;
 import java.util.List;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
+import neuralnetwork.trainerweb.bean.repository.SamplesRepositoryBean;
 
 /**
  * CDI-managed bean of available samples. 
@@ -12,18 +13,14 @@ import javax.inject.Named;
 @Named
 @RequestScoped
 public class SamplesListBean {
-    private final List<String> samples;
+    private final SamplesRepositoryBean repository;
     
-    public SamplesListBean() {
-        samples = Arrays.asList(
-                "Sample 1",
-                "Sample 2",
-                "Sample 3",
-                "Sample 4"
-        );
+    @Inject
+    public SamplesListBean(SamplesRepositoryBean repository) {
+        this.repository = repository;
     }
     
     public List<String> getSamples() {
-        return samples;
+        return repository.getNamesList();
     }
 }

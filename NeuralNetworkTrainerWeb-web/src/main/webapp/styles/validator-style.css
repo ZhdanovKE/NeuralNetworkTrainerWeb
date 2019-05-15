@@ -1,0 +1,19 @@
+/* 
+    Created on : May 14, 2019, 8:30:03 PM
+    Author     : Konstantin Zhdanov
+*/
+
+.error-field {
+    border: 2px solid red;
+    padding: 1px;
+}
+
+.error-message {
+    color:red;
+}
+
+.success {
+    color:green;
+    font-weight: bold;
+}
+

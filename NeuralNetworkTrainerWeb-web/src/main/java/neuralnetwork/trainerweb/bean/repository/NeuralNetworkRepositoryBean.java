@@ -1,7 +1,7 @@
 package neuralnetwork.trainerweb.bean.repository;
 
 import java.io.Serializable;
-import javax.enterprise.context.Dependent;
+import javax.enterprise.context.SessionScoped;
 import neuralnetwork.NamedNeuralNetwork;
 import neuralnetwork.commons.repository.NamedObjectRepository;
 
@@ -10,7 +10,7 @@ import neuralnetwork.commons.repository.NamedObjectRepository;
  * Neural Networks.
  * @author Konstantin Zhdanov
  */
-@Dependent
+@SessionScoped
 public class NeuralNetworkRepositoryBean extends NamedObjectRepository<NamedNeuralNetwork> 
         implements Serializable{
     

@@ -1,0 +1,29 @@
+/* 
+    Created on : May 17, 2019, 6:17:57 PM
+    Author     : Konstantin Zhdanov
+*/
+
+.table-header {
+    background-color: #d3d8d4;
+    text-align: center;
+    font-weight: bold;
+    vertical-align: central;
+}
+
+.category-caption {
+    text-align: center; 
+    font-style: italic;
+}
+
+.wb-table {
+   border: 1px solid black;
+}
+
+.wb-table td {
+   text-align: center;
+   border: 1px solid black;
+}
+
+.biases-row td {
+    border-top: 2px solid black;
+}

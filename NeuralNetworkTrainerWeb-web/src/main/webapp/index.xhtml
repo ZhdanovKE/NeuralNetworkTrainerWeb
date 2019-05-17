@@ -14,7 +14,7 @@
         <nav>
             <a href="#">Create</a> | 
             <a href="#">Load</a> | 
-            <a href="#">View/Change</a> |
+            <a href="view.xhtml">View/Change</a> |
             <a href="#">Train</a> | 
             <a href="#">Test</a> | 
             <a href="#">Save</a>
@@ -41,7 +41,12 @@
                         </c:if>
                         <c:otherwise>
                             <c:forEach items="#{networkListBean.networks}" var="network">
-                                <li>#{network.toString()}</li>
+                                <li><h:outputLink
+                                        value="view.xhtml">
+                                        <f:param name="name" value="#{network.name}"/>
+                                        #{network.toString()}
+                                    </h:outputLink>
+                                </li>
                             </c:forEach>
                         </c:otherwise>
                         

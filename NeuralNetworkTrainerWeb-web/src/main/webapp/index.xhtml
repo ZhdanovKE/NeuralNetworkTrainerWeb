@@ -8,16 +8,20 @@
         <title>Neural Network Trainer</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link type="text/css" rel="stylesheet" href="styles/view.css"/>
     </h:head>
     <h:body>
         Network: 
         <nav>
             <a href="add-new.xhtml">Create</a> | 
-            <a href="#">Load</a> | 
+            <h:outputLink value="#" 
+                          onclick="document.getElementById('fileInput').click()">
+                Upload
+            </h:outputLink> | 
             <a href="view.xhtml">View/Change</a> |
             <a href="#">Train</a> | 
             <a href="#">Test</a> | 
-            <a href="#">Save</a>
+            <a href="#">Download</a>
         </nav>
         Samples: 
         <nav>
@@ -27,7 +31,18 @@
         <div style="text-align: center">
             <h1>Welcome to the Neural Network Trainer!</h1>
         </div>
-        
+        <h:messages class="error-message"/>
+        <h:form prependId="false" style="display: none;"
+                enctype="multipart/form-data">
+            <h:inputFile id="fileInput"
+                         value="#{fileUploadBean.file}" 
+                         onchange="document.getElementById('uploadBtn').click()">
+            </h:inputFile>
+            <h:commandButton id="uploadBtn" 
+                             value="Upload"
+                             action="#{fileUploadBean.upload}">
+            </h:commandButton>
+        </h:form>
         <table style="width: 100%;">
             <tr>
                 <td>Here's the list of networks:</td>
@@ -52,7 +67,7 @@
                         
                     </ul>
                 </td>
-                <td>
+                <td style="vertical-align: top;">
                     <ul id="samplesList">
                         <c:if test="#{samplesListBean.samples.size() == 0}">
                             <li>No Samples</li>

@@ -11,24 +11,49 @@
         <link type="text/css" rel = "stylesheet" href="styles/view.css"/>
     </h:head>
     <f:metadata>
-        <f:viewParam id="nameParam" name="name" required="true" requiredMessage="Name is required."/>
-        <f:viewAction action="#{networkBean.setChosenName(param['name'])}"/>
+        <f:viewParam id="nameParam" name="name" 
+                     value="#{networkBean.chosenName}"/>
     </f:metadata>
     <h:body>
         <h:outputLink value="index.xhtml">Home page</h:outputLink>
         <br/>
-        <h:messages id="errorMessages" style="color:red;font-weight: bold;"/>
-        <h:outputText style="color:red;font-weight: bold;"
-                      rendered="#{not networkBean.exist}"
-                      value="Network with name &quot;#{param['name']}&quot; doesn't exist."/>
-        <h:panelGrid id="networkInfo" columns="2" cellspacing="2">
-            <h:outputText value="Name: "/>
-            <h:inputText id="nameInput" readonly="true"
-                         value="#{networkBean.chosenName}"/>
-            
-            <h:outputText value="Signature: "/>
-            <h:inputText readonly="true" value="#{networkBean.signature}"/>
-        </h:panelGrid>
+        <br/>
+        <h:form>
+            <h:outputLabel value="Network: " for="selectNetwork"/>
+            <h:selectOneMenu id="selectNetwork" value="#{networkBean.chosenName}">        
+                <f:selectItems value="#{networkBean.allNames}"/>
+            </h:selectOneMenu>
+            <h:commandButton value="View" action="view?faces-redirect=true&amp;includeViewParams=true"/>
+        </h:form>
+        <br/>
+        <h:messages id="errorMessages" class="error-message"/>
+        <c:choose>
+            <c:when test="#{empty networkBean.chosenName}">
+                <h:outputText class="prompt-message"
+                          value="Please choose a network."/>
+            </c:when>
+            <c:otherwise>
+                <h:panelGroup rendered="#{not networkBean.exist}">
+                    <h:outputText class="error-message"
+                          value="Network with name &quot;#{networkBean.chosenName}&quot; doesn't exist."/>
+                    <br/>
+                    <h:outputText class="prompt-message"
+                              value="Please choose another network."/>
+                </h:panelGroup>
+                
+            </c:otherwise>
+        </c:choose>
+        <h:panelGroup rendered="#{networkBean.exist}">
+            <div class="chosen-message" >Chosen network:</div>
+            <h:panelGrid id="networkInfo" columns="2" cellspacing="2">
+                <h:outputText value="Name: "/>
+                <h:outputText id="nameInput"
+                             value="#{networkBean.chosenName}"/>
+
+                <h:outputText value="Signature: "/>
+                <h:outputText value="#{networkBean.signature}"/>
+            </h:panelGrid>
+        </h:panelGroup>
         <h:panelGroup id="saveSucceded">
             <h:outputText
                 class="save-success"
@@ -97,7 +122,6 @@
                     <br/>
                 </c:forEach>
                 <h:commandButton value="Save" action="#{networkBean.save}">
-                    <f:param name="name" value="#{networkBean.chosenName}"/>
                     <f:ajax execute="@form" render="@form errorMessages saveSucceded"/>
                 </h:commandButton>
             </h:form>

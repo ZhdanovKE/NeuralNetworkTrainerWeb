@@ -15,6 +15,21 @@
     font-style: italic;
 }
 
+.error-message {
+    color: red;
+    font-weight: bold;
+}
+
+.prompt-message {
+    color: blue;
+    font-weight: bold;
+}
+
+.chosen-message {
+    font-weight: bold;
+    font-style: italic;
+}
+
 .save-success {
     font-weight: bold;
     color: green;

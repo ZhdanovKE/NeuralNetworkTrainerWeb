@@ -15,6 +15,11 @@
     font-style: italic;
 }
 
+.save-success {
+    font-weight: bold;
+    color: green;
+}
+
 .wb-table {
    border: 1px solid black;
 }

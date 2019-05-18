@@ -29,6 +29,12 @@
             <h:outputText value="Signature: "/>
             <h:inputText readonly="true" value="#{networkBean.signature}"/>
         </h:panelGrid>
+        <h:panelGroup id="saveSucceded">
+            <h:outputText
+                class="save-success"
+                rendered="#{not facesContext.validationFailed and networkBean.saved}"
+                value="New weights and biases saved successfully."/>
+        </h:panelGroup>
         <br/>
         <c:if test="#{networkBean.exist}">
             <div class="category-caption">WEIGHTS AND BIASES:</div>
@@ -92,7 +98,7 @@
                 </c:forEach>
                 <h:commandButton value="Save" action="#{networkBean.save}">
                     <f:param name="name" value="#{networkBean.chosenName}"/>
-                    <f:ajax execute="@form" render="@form errorMessages"/>
+                    <f:ajax execute="@form" render="@form errorMessages saveSucceded"/>
                 </h:commandButton>
             </h:form>
         </c:if>

@@ -31,6 +31,8 @@ public class NetworkBean implements Serializable {
     
     private String chosenName;
     
+    private boolean saved;
+    
     private List<double[][]> weightsForLayers;
     private List<double[]> biasesForLayers;
     
@@ -41,6 +43,7 @@ public class NetworkBean implements Serializable {
      * @param name {@code String} name of the network to be loaded.
      */
     public void initWithName(String name) {
+        saved = false;
         if (    name == null || 
                 name.isEmpty() || 
                 (nn = repository.get(name)) == null ) {
@@ -72,6 +75,25 @@ public class NetworkBean implements Serializable {
      */
     public void save() {
         copyWeightsAndBiasesToNetwork(nn);
+        setSaved(true);
+    }
+    
+    /**
+     * Set new value to the 'saved' property.
+     * @param newValue {@code true} if network has been saved successfully,
+     * {@code false} otherwise.
+     */
+    public void setSaved(boolean newValue) {
+        saved = newValue;
+    }
+    
+    /**
+     * Whether the currently loaded network has been saved successfully.
+     * @return {@code true} if network has been saved successfully,
+     * {@code false} otherwise.
+     */
+    public boolean isSaved() {
+        return saved;
     }
     
     /**

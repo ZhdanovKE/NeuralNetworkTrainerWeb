@@ -75,6 +75,7 @@ public class NetworkBean implements Serializable {
      */
     public void save() {
         copyWeightsAndBiasesToNetwork(nn);
+        repository.add(chosenName, nn);
         setSaved(true);
     }
     

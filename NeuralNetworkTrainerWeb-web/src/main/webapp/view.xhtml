@@ -12,21 +12,19 @@
     </h:head>
     <f:metadata>
         <f:viewParam id="nameParam" name="name" required="true" requiredMessage="Name is required."/>
-        <f:viewAction action="#{networkBean.initWithName(param['name'])}"/>
+        <f:viewAction action="#{networkBean.setChosenName(param['name'])}"/>
     </f:metadata>
     <h:body>
         <h:outputLink value="index.xhtml">Home page</h:outputLink>
         <br/>
-        <h:message for="nameParam" style="color:red;font-weight: bold;"/>
-        <br/>
+        <h:messages style="color:red;font-weight: bold;"/>
         <h:outputText style="color:red;font-weight: bold;"
                       rendered="#{not networkBean.exist}"
                       value="Network with name &quot;#{param['name']}&quot; doesn't exist."/>
-
-        <h:panelGrid columns="2" cellspacing="2">
+        <h:panelGrid id="networkInfo" columns="2" cellspacing="2">
             <h:outputText value="Name: "/>
             <h:inputText id="nameInput" readonly="true"
-                         value="#{param['name']}"/>
+                         value="#{networkBean.chosenName}"/>
             
             <h:outputText value="Signature: "/>
             <h:inputText readonly="true" value="#{networkBean.signature}"/>
@@ -34,57 +32,66 @@
         <br/>
         <c:if test="#{networkBean.exist}">
             <div class="category-caption">WEIGHTS AND BIASES:</div>
-            <c:forEach var="layerNum"
-                    begin="0" end="#{networkBean.getNumberHiddenLayers()}">
-                <table class="wb-table">
-                    <tr>
-                        <td></td>
-                        <td colspan="#{networkBean.getLayerSize(layerNum) + 1}">
-                            #{networkBean.getLayerNamesForLayer(layerNum)[1]}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td rowspan="#{networkBean.getPrevLayerSizeForLayer(layerNum) + 1}">
-                            #{networkBean.getLayerNamesForLayer(layerNum)[0]}
-                        </td>
-                        <td></td>
-                        <c:forEach begin="1" end="#{networkBean.getLayerSize(layerNum)}" var="idx">
-                            <td class="table-header">
-                                <h:outputText value="Neuron #{idx}"/>
-                            </td>
-                        </c:forEach>
-                    </tr>
-                    <c:forEach begin="1" end="#{networkBean.getPrevLayerSizeForLayer(layerNum)}" 
-                               var="prevIdx">
+            <h:form prependId="false">
+                <c:forEach var="layerNum"
+                        begin="0" end="#{networkBean.getNumberHiddenLayers()}">
+                    <table class="wb-table">
                         <tr>
-                            <td class="table-header">
-                                <h:outputText value="Neuron #{prevIdx}"/>
+                            <td></td>
+                            <td colspan="#{networkBean.getLayerSize(layerNum) + 1}">
+                                #{networkBean.getLayerNamesForLayer(layerNum)[1]}
                             </td>
-                            <c:forEach begin="1" 
-                                       end="#{networkBean.getLayerSize(layerNum)}" 
-                                       var="idx">
-                                <td>
-                                    #{networkBean.getWeightsForLayer(layerNum)[prevIdx - 1][idx - 1]}
+                        </tr>
+                        <tr>
+                            <td rowspan="#{networkBean.getPrevLayerSizeForLayer(layerNum) + 1}">
+                                #{networkBean.getLayerNamesForLayer(layerNum)[0]}
+                            </td>
+                            <td></td>
+                            <c:forEach begin="1" end="#{networkBean.getLayerSize(layerNum)}" var="idx">
+                                <td class="table-header">
+                                    <h:outputText value="Neuron #{idx}"/>
                                 </td>
                             </c:forEach>
                         </tr>
-                    </c:forEach>
-                    <tr class="biases-row">
-                        <td></td>
-                        <td class="table-header">
-                            Biases
-                        </td>
-                        <c:forEach begin="1" 
-                                    end="#{networkBean.getLayerSize(layerNum)}" 
-                                    var="idx">
-                            <td>
-                                #{networkBean.getBiasesForLayer(layerNum)[idx - 1]}
-                            </td>
+                        <c:forEach begin="1" end="#{networkBean.getPrevLayerSizeForLayer(layerNum)}" 
+                                   var="prevIdx">
+                            <tr>
+                                <td class="table-header">
+                                    <h:outputText value="Neuron #{prevIdx}"/>
+                                </td>
+                                <c:forEach begin="1" 
+                                           end="#{networkBean.getLayerSize(layerNum)}" 
+                                           var="idx">
+                                    <td>
+                                        <h:inputText
+                                            converter="javax.faces.Double"
+                                            value="#{networkBean.getWeightsForLayer(layerNum)[prevIdx - 1][idx - 1]}"/>
+                                    </td>
+                                </c:forEach>
+                            </tr>
                         </c:forEach>
-                    </tr>
-                </table>
-                <br/>
-            </c:forEach>
+                        <tr class="biases-row">
+                            <td></td>
+                            <td class="table-header">
+                                Biases
+                            </td>
+                            <c:forEach begin="1" 
+                                        end="#{networkBean.getLayerSize(layerNum)}" 
+                                        var="idx">
+                                <td>
+                                    <h:inputText
+                                        converter="javax.faces.Double"
+                                        value="#{networkBean.getBiasesForLayer(layerNum)[idx - 1]}"/>
+                                </td>
+                            </c:forEach>
+                        </tr>
+                    </table>
+                    <br/>
+                </c:forEach>
+                <h:commandButton value="Save" action="#{networkBean.save}">
+                    <f:param name="name" value="#{networkBean.chosenName}"/>
+                </h:commandButton>
+            </h:form>
         </c:if>
     </h:body>
 </html>

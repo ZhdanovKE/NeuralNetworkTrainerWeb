@@ -1,14 +1,15 @@
 package neuralnetwork.trainerweb.bean;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.model.ArrayDataModel;
 import javax.faces.model.DataModel;
 import javax.faces.validator.ValidatorException;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import neuralnetwork.NamedNeuralNetwork;
@@ -19,13 +20,16 @@ import neuralnetwork.trainerweb.bean.repository.NeuralNetworkRepositoryBean;
  * @author Konstantin Zhdanov
  */
 @Named
-@RequestScoped
-public class NetworkBean {
+@ViewScoped 
+public class NetworkBean implements Serializable {
+    private static final long serialVersionUID = 2256786600647175923L;
     
     @Inject
     NeuralNetworkRepositoryBean repository;
     
     NamedNeuralNetwork nn;
+    
+    private String chosenName;
     
     private List<double[][]> weightsForLayers;
     private List<double[]> biasesForLayers;
@@ -61,6 +65,41 @@ public class NetworkBean {
             throw new ValidatorException(new FacesMessage("Network with name \"" + name + 
                             "\" doesn't exist"));
         }
+    }
+    
+    /**
+     * Save user-entered values of weights and biases into the loaded network.
+     * @return Outcome to redirect to the current page and include view parameters.
+     */
+    public String save() {
+        copyWeightsAndBiasesToNetwork(nn);
+        String viewId = FacesContext.getCurrentInstance().getViewRoot().getViewId();
+        return viewId + "?faces-redirect=true&includeViewParams=true";
+    }
+    
+    /**
+     * Name of the loaded network.
+     * @return Name of the loaded network.
+     */
+    public String getChosenName() {
+        return chosenName;
+    }
+
+    /**
+     * Change the name of the network to be loaded.
+     * @param chosenName Name of the network to load.
+     */
+    public void setChosenName(String chosenName) {
+        this.chosenName = chosenName;
+        initWithName(chosenName);
+    }
+    
+    /**
+     * List of all available networks' names.
+     * @return {@code List<String>} of networks' names.
+     */
+    public List<String> getAllNames() {
+        return repository.getNamesList();
     }
     
     /**
@@ -260,5 +299,25 @@ public class NetworkBean {
         layerBiases = new double[nn.getNumberOutputs()];
         fillBiasesFromNetworkForLayer(layerBiases, nn.getNumberHiddenLayers());
         biasesForLayers.add(layerBiases);
+    }
+
+    private void copyWeightsAndBiasesToNetwork(NamedNeuralNetwork nn) {
+        if (nn == null) {
+            return;
+        }
+
+        for (int layerNum = 0; layerNum <= nn.getNumberHiddenLayers(); layerNum++) {
+            double[][] weights = weightsForLayers.get(layerNum);
+            for (int prevNeuron = 0; prevNeuron < weights.length; prevNeuron++) {
+                for (int neuron = 0; neuron < weights[prevNeuron].length; neuron++) {
+                    nn.setWeight(layerNum, prevNeuron, neuron, weights[prevNeuron][neuron]);
+                }
+            }
+
+            double[] biases = biasesForLayers.get(layerNum);
+            for (int neuron = 0; neuron < biases.length; neuron++) {
+                nn.setBias(layerNum, neuron, biases[neuron]);
+            }
+        }
     }
 }

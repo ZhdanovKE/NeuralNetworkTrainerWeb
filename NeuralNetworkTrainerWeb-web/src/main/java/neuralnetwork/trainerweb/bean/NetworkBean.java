@@ -69,12 +69,9 @@ public class NetworkBean implements Serializable {
     
     /**
      * Save user-entered values of weights and biases into the loaded network.
-     * @return Outcome to redirect to the current page and include view parameters.
      */
-    public String save() {
+    public void save() {
         copyWeightsAndBiasesToNetwork(nn);
-        String viewId = FacesContext.getCurrentInstance().getViewRoot().getViewId();
-        return viewId + "?faces-redirect=true&includeViewParams=true";
     }
     
     /**

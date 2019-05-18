@@ -17,7 +17,7 @@
     <h:body>
         <h:outputLink value="index.xhtml">Home page</h:outputLink>
         <br/>
-        <h:messages style="color:red;font-weight: bold;"/>
+        <h:messages id="errorMessages" style="color:red;font-weight: bold;"/>
         <h:outputText style="color:red;font-weight: bold;"
                       rendered="#{not networkBean.exist}"
                       value="Network with name &quot;#{param['name']}&quot; doesn't exist."/>
@@ -65,6 +65,7 @@
                                     <td>
                                         <h:inputText
                                             converter="javax.faces.Double"
+                                            label="&laquo;Neuron #{prevIdx} -- Neuron #{idx}&raquo; weight"
                                             value="#{networkBean.getWeightsForLayer(layerNum)[prevIdx - 1][idx - 1]}"/>
                                     </td>
                                 </c:forEach>
@@ -81,6 +82,7 @@
                                 <td>
                                     <h:inputText
                                         converter="javax.faces.Double"
+                                        label="Neuron #{idx} bias"
                                         value="#{networkBean.getBiasesForLayer(layerNum)[idx - 1]}"/>
                                 </td>
                             </c:forEach>
@@ -90,6 +92,7 @@
                 </c:forEach>
                 <h:commandButton value="Save" action="#{networkBean.save}">
                     <f:param name="name" value="#{networkBean.chosenName}"/>
+                    <f:ajax execute="@form" render="@form errorMessages"/>
                 </h:commandButton>
             </h:form>
         </c:if>

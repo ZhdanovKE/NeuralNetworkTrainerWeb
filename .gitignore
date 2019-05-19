@@ -1,1 +1,4 @@
 /NeuralNetworkTrainerWeb-web/target/
+/NeuralNetworkJPA/target/
+/NeuralNetworkTrainerWeb-ejb/target/
+/NeuralNetworkTrainerWeb-ear/target/

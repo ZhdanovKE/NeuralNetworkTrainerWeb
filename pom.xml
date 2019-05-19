@@ -10,5 +10,6 @@
     <module>NeuralNetworkTrainerWeb-ear</module>
     <module>NeuralNetworkTrainerWeb-web</module>
     <module>NeuralNetworkTrainerWeb-ejb</module>
+    <module>NeuralNetworkJPA</module>
   </modules>
 </project>

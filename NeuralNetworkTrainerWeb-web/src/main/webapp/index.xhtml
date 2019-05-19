@@ -9,8 +9,17 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <link type="text/css" rel="stylesheet" href="styles/view.css"/>
+        <script type="text/javascript" src="script/global.js"/>
     </h:head>
     <h:body>
+        <script type="text/javascript">
+            var fileUploader = new FileUploader(
+                    'fileInput', 
+                    'validationErrorMsg', 
+                    'uploadBtn',
+                    #{settingsBean.maxFileUploadSizeInBytes}
+            );
+        </script>
         Network: 
         <nav>
             <a href="add-new.xhtml">Create</a> | 
@@ -36,8 +45,10 @@
                 enctype="multipart/form-data">
             <h:inputFile id="fileInput"
                          value="#{fileUploadBean.file}" 
-                         onchange="document.getElementById('uploadBtn').click()">
+                         onchange="fileUploader.handleUpload()">
             </h:inputFile>
+            <h:inputText id="validationErrorMsg" 
+                         value="#{fileUploadBean.validationErrorMsg}"/>
             <h:commandButton id="uploadBtn" 
                              value="Upload"
                              action="#{fileUploadBean.upload}">
@@ -83,4 +94,5 @@
         </table>
         
     </h:body>
+    
 </html>

@@ -91,9 +91,10 @@ public class FileUploadBean {
                             file.getSubmittedFileName())
             );
             return;
-        }    
+        }
+        File tempFile = null;
         try {
-            File tempFile = File.createTempFile("uploadedNN", ".tmp");
+            tempFile = File.createTempFile("uploadedNN", ".tmp");
             Files.copy(file.getInputStream(), tempFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
             NeuralNetwork nn;
             if (isTextFile(file)) {
@@ -127,6 +128,11 @@ public class FileUploadBean {
                     new FacesMessage("Error reading file: " + 
                             file.getSubmittedFileName())
             );
+        }
+        finally {
+            if (tempFile != null) {
+                tempFile.delete();
+            }
         }
     }
     

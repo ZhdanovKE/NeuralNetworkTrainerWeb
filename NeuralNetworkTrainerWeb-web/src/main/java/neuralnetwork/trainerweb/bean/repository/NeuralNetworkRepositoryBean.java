@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.ejb.EJB;
+import javax.ejb.EJBException;
 import javax.enterprise.context.SessionScoped;
 import neuralnetwork.NamedNeuralNetwork;
 import neuralnetwork.commons.repository.NamedObjectRepository;
@@ -35,7 +36,12 @@ public class NeuralNetworkRepositoryBean extends NamedObjectRepository<NamedNeur
 
     @Override
     public boolean remove(String name) {
-        nnEJBFacade.remove(name);
+        try {
+            nnEJBFacade.remove(name);
+        }
+        catch(EJBException e) {
+            return false;
+        }
         return true;
     }
 

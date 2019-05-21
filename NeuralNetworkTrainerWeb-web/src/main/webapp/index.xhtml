@@ -27,20 +27,20 @@
         </script>
         Network: 
         <nav>
-            <a href="add-new.xhtml">Create</a> | 
+            <a href="add-new.xhtml"><span class="fas fa-plus"></span>Create</a> | 
             <h:outputLink value="#" 
                           onclick="document.getElementById('fileInput').click()">
-                Upload
+                <span class="fas fa-file-upload"></span> Upload
             </h:outputLink> | 
-            <a href="view.xhtml">View/Change</a> |
-            <a href="#" class="empty-link">Train</a> | 
-            <a href="#" class="empty-link">Test</a> | 
-            <a href="#" class="empty-link">Download</a>
+            <a href="view.xhtml"><span class="fas fa-eye"></span> View/Change</a> |
+            <a href="#" class="empty-link"><span class="fas fa-graduation-cap"></span> Train</a> | 
+            <a href="#" class="empty-link"><span class="fas fa-superscript"></span> Evaluate</a> | 
+            <a href="#" class="empty-link"><span class="fas fa-file-download"></span> Download</a>
         </nav>
         Samples: 
         <nav>
-            <a href="#" class="empty-link">Load</a> | 
-            <a href="#" class="empty-link">View/Change</a>
+            <a href="#" class="empty-link"><span class="fas fa-file-upload"></span> Upload</a> | 
+            <a href="#" class="empty-link"><span class="fas fa-eye"></span> View/Change</a>
         </nav>
         <div style="text-align: center">
             <h1>Welcome to the Neural Network Trainer!</h1>
@@ -80,6 +80,7 @@
                             <li><h:outputLink
                                     value="view.xhtml">
                                     <f:param name="name" value="#{network.name}"/>
+                                    <span class="fas fa-eye"></span>
                                     #{network.toString()}
                                 </h:outputLink>
                                 &nbsp;
@@ -100,7 +101,10 @@
                         </c:if>
                         <c:otherwise>
                             <c:forEach items="#{samplesListBean.samples}" var="samples">
-                                <li>#{samples.toString()}</li>
+                                <li class="empty-link">
+                                    <span class="fas fa-eye"></span>
+                                    #{samples.toString()}
+                                </li>
                             </c:forEach>
                         </c:otherwise>
                     </ul>

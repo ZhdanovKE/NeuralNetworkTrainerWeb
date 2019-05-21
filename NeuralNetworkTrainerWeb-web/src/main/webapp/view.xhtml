@@ -9,13 +9,14 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <link type="text/css" rel = "stylesheet" href="styles/view.css"/>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous"/>
     </h:head>
     <f:metadata>
         <f:viewParam id="nameParam" name="name" 
                      value="#{networkBean.chosenName}"/>
     </f:metadata>
     <h:body>
-        <h:outputLink value="index.xhtml">Home page</h:outputLink>
+        <h:outputLink value="index.xhtml"><span class="fas fa-home"></span> Home page</h:outputLink>
         <br/>
         <br/>
         <h:form>

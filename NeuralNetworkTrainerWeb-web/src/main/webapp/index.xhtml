@@ -9,6 +9,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <link type="text/css" rel="stylesheet" href="styles/view.css"/>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous"/>
         <script type="text/javascript" src="script/global.js"/>
     </h:head>
     <h:body>
@@ -19,6 +20,10 @@
                     'uploadBtn',
                     #{settingsBean.maxFileUploadSizeInBytes}
             );
+            var networkRemover = new NetworkRemover(
+                    'deleteNNInput',
+                    'deleteNNBtn'
+            );
         </script>
         Network: 
         <nav>
@@ -28,14 +33,14 @@
                 Upload
             </h:outputLink> | 
             <a href="view.xhtml">View/Change</a> |
-            <a href="#">Train</a> | 
-            <a href="#">Test</a> | 
-            <a href="#">Download</a>
+            <a href="#" class="empty-link">Train</a> | 
+            <a href="#" class="empty-link">Test</a> | 
+            <a href="#" class="empty-link">Download</a>
         </nav>
         Samples: 
         <nav>
-            <a href="#">Load</a> | 
-            <a href="#">View/Change</a>
+            <a href="#" class="empty-link">Load</a> | 
+            <a href="#" class="empty-link">View/Change</a>
         </nav>
         <div style="text-align: center">
             <h1>Welcome to the Neural Network Trainer!</h1>
@@ -61,20 +66,30 @@
             </tr>
             <tr>
                 <td>
+                    <h:form prependId="false" style="display:none">
+                        <h:inputText id="deleteNNInput" value="#{networkRemoveBean.nameToDelete}"/>
+                        <h:commandButton id="deleteNNBtn" 
+                                         value="Delete"
+                                         action="#{networkRemoveBean.remove()}"/>
+                    </h:form>
                     <ul id="networksList">
                         <c:if test="#{networkListBean.networks.size() == 0}">
                             <li>No networks</li>
                         </c:if>
-                        <c:otherwise>
-                            <c:forEach items="#{networkListBean.networks}" var="network">
-                                <li><h:outputLink
-                                        value="view.xhtml">
-                                        <f:param name="name" value="#{network.name}"/>
-                                        #{network.toString()}
-                                    </h:outputLink>
-                                </li>
-                            </c:forEach>
-                        </c:otherwise>
+                        <c:forEach items="#{networkListBean.networks}" var="network">
+                            <li><h:outputLink
+                                    value="view.xhtml">
+                                    <f:param name="name" value="#{network.name}"/>
+                                    #{network.toString()}
+                                </h:outputLink>
+                                &nbsp;
+                                <span class="delete-icon">
+                                    <span class="fas fa-trash-alt" 
+                                        onclick="networkRemover.confirmDelete('#{network.name}')">
+                                    </span>
+                                </span>
+                            </li>
+                        </c:forEach>
                         
                     </ul>
                 </td>

@@ -3,6 +3,18 @@
     Author     : Konstantin Zhdanov
 */
 
+.empty-link {
+    color: lightgrey;
+}
+
+.delete-icon {
+    color: #d11a2a;
+}
+
+.delete-icon:hover {
+    color: black;
+}
+
 .table-header {
     background-color: #d3d8d4;
     text-align: center;

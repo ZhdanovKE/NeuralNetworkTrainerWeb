@@ -35,4 +35,21 @@ class FileUploader {
     }
 }
 
+class NetworkRemover {
+    
+    constructor(nameInputId, deleteBtnId) {
+        this.nameInputId = nameInputId;
+        this.deleteBtnId = deleteBtnId;
+        
+    }
+    
+    confirmDelete(name) {
+        if (confirm("Do you really want to delete network '" + name + "'?")) {
+            let nameInput = document.getElementById(this.nameInputId);
+            let deleteBtn = document.getElementById(this.deleteBtnId);
+            nameInput.value = name;
+            deleteBtn.click();
+        }
+    }
+}
 

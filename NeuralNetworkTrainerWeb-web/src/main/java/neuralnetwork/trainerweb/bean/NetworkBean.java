@@ -31,6 +31,8 @@ public class NetworkBean implements Serializable {
     
     private String chosenName;
     
+    private String newName;
+    
     private boolean saved;
     
     private List<double[][]> weightsForLayers;
@@ -52,6 +54,39 @@ public class NetworkBean implements Serializable {
 
         initWeightsForLayers();
         initBiasesForLayers();
+        
+        newName = name;
+    }
+    
+    /**
+     * Perform rename operation of the chosen network with the entered name.
+     * If the name stays the same, this method does nothing.
+     * @return {@code null} if there was an error while renaming, {@link String}
+     * name of the same view to be redirected to with the new name as a view 
+     * parameter.
+     */
+    public String rename() {
+        if (    newName == null ||
+                newName.trim().isEmpty() ) {
+            FacesContext.getCurrentInstance().addMessage(null, 
+                    new FacesMessage("New name cannot be empty."));
+            newName = chosenName;
+            return null;
+        }
+        else if (newName.trim().equals(chosenName.trim())) {
+            return null;
+        }
+        else if (repository.containsName(newName)) {
+            FacesContext.getCurrentInstance().addMessage(null, 
+                    new FacesMessage("Another network has the same name."));
+            newName = chosenName;
+            return null;
+        }
+        repository.rename(chosenName, newName.trim());
+        chosenName = newName.trim();
+        nn.setName(chosenName);
+        return FacesContext.getCurrentInstance().getViewRoot().getViewId() + 
+                "?faces-redirect=true&includeViewParams=true";
     }
     
     /**
@@ -112,6 +147,24 @@ public class NetworkBean implements Serializable {
     public void setChosenName(String chosenName) {
         this.chosenName = chosenName;
         initWithName(chosenName);
+    }
+    
+    /**
+     * Get the new name to be set to the chosen network.
+     * @return {@link String} value to be used as the name of the
+     * chosen network after rename operation is performed.
+     */
+    public String getNewName() {
+        return newName;
+    }
+
+    /**
+     * Set the value to be used as the name of the
+     * chosen network after rename operation is performed. 
+     * @param newName {@link String} value of the new name.
+     */
+    public void setNewName(String newName) {
+        this.newName = newName;
     }
     
     /**

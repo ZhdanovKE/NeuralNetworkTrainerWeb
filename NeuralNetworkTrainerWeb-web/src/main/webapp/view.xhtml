@@ -19,7 +19,7 @@
         <h:outputLink value="index.xhtml"><span class="fas fa-home"></span> Home page</h:outputLink>
         <br/>
         <br/>
-        <h:form>
+        <h:form prependId="false">
             <h:outputLabel value="Network: " for="selectNetwork"/>
             <h:selectOneMenu id="selectNetwork" value="#{networkBean.chosenName}">        
                 <f:selectItems value="#{networkBean.allNames}"/>
@@ -46,14 +46,21 @@
         </c:choose>
         <h:panelGroup rendered="#{networkBean.exist}">
             <div class="chosen-message" >Chosen network:</div>
-            <h:panelGrid id="networkInfo" columns="2" cellspacing="2">
-                <h:outputText value="Name: "/>
-                <h:outputText id="nameInput"
-                             value="#{networkBean.chosenName}"/>
-
-                <h:outputText value="Signature: "/>
-                <h:outputText value="#{networkBean.signature}"/>
-            </h:panelGrid>
+            <h:form prependId="false">
+                <h:panelGrid id="networkInfo" columns="3" cellspacing="2">
+                    <h:outputText value="Name: "/>
+                    <h:inputText id="nameInput"
+                                 value="#{networkBean.newName}"/>
+                    <h:commandButton id="renameBtn"
+                                     rendered="#{networkBean.exist}"
+                                     value="Rename"
+                                     action="#{networkBean.rename}">
+                        <f:ajax execute="@form" render="@form errorMessages selectNetwork"/>
+                    </h:commandButton>
+                    <h:outputText value="Signature: "/>
+                    <h:outputText value="#{networkBean.signature}"/>
+                </h:panelGrid>
+            </h:form>
         </h:panelGroup>
         <h:panelGroup id="saveSucceded">
             <h:outputText

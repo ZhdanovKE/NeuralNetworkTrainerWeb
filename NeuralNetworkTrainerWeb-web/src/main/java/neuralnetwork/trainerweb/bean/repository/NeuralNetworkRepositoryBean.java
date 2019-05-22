@@ -70,6 +70,7 @@ public class NeuralNetworkRepositoryBean extends NamedObjectRepository<NamedNeur
     public void rename(String oldName, String newName) {
         NeuralNetworkEntity entity = nnEJBFacade.findByName(oldName);
         entity.setName(newName);
+        entity.getNetwork().setName(newName);
         nnEJBFacade.merge(entity);
         super.onNameChange(entity.getNetwork(), oldName, newName);
     }

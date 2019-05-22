@@ -53,3 +53,29 @@ class NetworkRemover {
     }
 }
 
+class NetworkDownloader {
+    
+    constructor(nameInputId, saveAsTextCheckId, downloadBtnId) {
+        this.nameInputId = nameInputId;
+        this.saveAsTextCheckId = saveAsTextCheckId;
+        this.downloadBtnId = downloadBtnId;
+    }
+    
+    downloadAsBinary(name) {
+        let nameInput = document.getElementById(this.nameInputId);
+        let saveAsTextCheck = document.getElementById(this.saveAsTextCheckId);
+        let downloadBtn = document.getElementById(this.downloadBtnId);
+        nameInput.value = name;
+        saveAsTextCheck.checked = false;
+        downloadBtn.click();
+    }
+    
+    downloadAsText(name) {
+        let nameInput = document.getElementById(this.nameInputId);
+        let saveAsTextCheck = document.getElementById(this.saveAsTextCheckId);
+        let downloadBtn = document.getElementById(this.downloadBtnId);
+        nameInput.value = name;
+        saveAsTextCheck.checked = true;
+        downloadBtn.click();
+    }
+}

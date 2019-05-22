@@ -7,6 +7,14 @@
     color: lightgrey;
 }
 
+.icon {
+    color: black;
+}
+
+.icon:hover {
+    color: blue;
+}
+
 .delete-icon {
     color: #d11a2a;
 }

@@ -9,6 +9,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <link type="text/css" rel="stylesheet" href="styles/view.css"/>
+        <link type="text/css" rel="stylesheet" href="styles/tooltip.css"/>
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous"/>
         <script type="text/javascript" src="script/global.js"/>
     </h:head>
@@ -23,6 +24,11 @@
             var networkRemover = new NetworkRemover(
                     'deleteNNInput',
                     'deleteNNBtn'
+            );
+            var networkDownloader = new NetworkDownloader(
+                    'downloadNNInput',
+                    'saveAsTextCheckbox',
+                    'downloadNNBtn'
             );
         </script>
         Network: 
@@ -72,6 +78,13 @@
                                          value="Delete"
                                          action="#{networkRemoveBean.remove()}"/>
                     </h:form>
+                    <h:form prependId="false" style="display:none">
+                        <h:inputText id="downloadNNInput" value="#{fileDownloadBean.nameToDownload}"/>
+                        <h:selectBooleanCheckbox id="saveAsTextCheckbox" value="#{fileDownloadBean.saveAsText}"/>
+                        <h:commandButton id="downloadNNBtn" 
+                                         value="Download"
+                                         action="#{fileDownloadBean.download()}"/>
+                    </h:form>
                     <ul id="networksList">
                         <c:if test="#{networkListBean.networks.size() == 0}">
                             <li>No networks</li>
@@ -83,6 +96,24 @@
                                     <span class="fas fa-eye"></span>
                                     #{network.toString()}
                                 </h:outputLink>
+                                &nbsp;
+                                <span class="icon tooltip">
+                                    <span class="fas fa-file-download" 
+                                          onclick="networkDownloader.downloadAsBinary('#{network.name}')">    
+                                    </span>
+                                    <span class="tooltip-text">
+                                        Download as binary file
+                                    </span>
+                                </span>
+                                &nbsp;
+                                <span class="icon tooltip">
+                                    <span class="fas fa-book"
+                                          onclick="networkDownloader.downloadAsText('#{network.name}')">
+                                    </span>
+                                    <span class="tooltip-text">
+                                        Download as text file
+                                    </span>
+                                </span>
                                 &nbsp;
                                 <span class="delete-icon">
                                     <span class="fas fa-trash-alt" 

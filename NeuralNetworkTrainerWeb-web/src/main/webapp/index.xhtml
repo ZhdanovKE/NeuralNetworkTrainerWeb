@@ -40,7 +40,7 @@
             </h:outputLink> | 
             <a href="view.xhtml"><span class="fas fa-eye"></span> View/Change</a> |
             <a href="#" class="empty-link"><span class="fas fa-graduation-cap"></span> Train</a> | 
-            <a href="#" class="empty-link"><span class="fas fa-superscript"></span> Evaluate</a> | 
+            <a href="evaluate.xhtml"><span class="fas fa-superscript"></span> Evaluate</a> | 
             <a href="#" class="empty-link"><span class="fas fa-file-download"></span> Download</a>
         </nav>
         Samples: 
@@ -96,6 +96,16 @@
                                     <span class="fas fa-eye"></span>
                                     #{network.toString()}
                                 </h:outputLink>
+                                &nbsp;
+                                <span class="icon tooltip">
+                                    <h:outputLink value="evaluate.xhtml">
+                                        <f:param name="name" value="#{network.name}"/>
+                                        <span class="fas fa-superscript"></span>
+                                    </h:outputLink>
+                                    <span class="tooltip-text">
+                                        Evaluate
+                                    </span>
+                                </span>
                                 &nbsp;
                                 <span class="icon tooltip">
                                     <span class="fas fa-file-download" 

@@ -269,6 +269,30 @@ public class NetworkBean implements Serializable {
     }
     
     /**
+     * Number of the input neurons.
+     * @return The number of the input neurons in the loaded network or {@code -1}
+     * if no network has been loaded.
+     */
+    public int getNumberInputs() {
+        if (nn == null) {
+            return -1;
+        }
+        return nn.getNumberInputs();
+    }
+    
+    /**
+     * Number of the output neurons.
+     * @return The number of the output neurons in the loaded network or {@code -1}
+     * if no network has been loaded.
+     */
+    public int getNumberOutputs() {
+        if (nn == null) {
+            return -1;
+        }
+        return nn.getNumberOutputs();
+    }
+    
+    /**
      * Number of the hidden layers.
      * @return The number of the hidden layers in the loaded network or {@code -1}
      * if no network has been loaded.

@@ -67,3 +67,13 @@
 .biases-row td {
     border-top: 2px solid black;
 }
+
+.numberInput {
+    width: 5rem;
+}
+
+.numberOutput {
+    width: 5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

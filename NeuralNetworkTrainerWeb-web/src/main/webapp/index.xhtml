@@ -46,7 +46,7 @@
         Samples: 
         <nav>
             <a href="#" class="empty-link"><span class="fas fa-file-upload"></span> Upload</a> | 
-            <a href="#" class="empty-link"><span class="fas fa-eye"></span> View/Change</a>
+            <a href="viewsamples.xhtml"><span class="fas fa-eye"></span> View/Change</a>
         </nav>
         <div style="text-align: center">
             <h1>Welcome to the Neural Network Trainer!</h1>
@@ -137,14 +137,17 @@
                 </td>
                 <td style="vertical-align: top;">
                     <ul id="samplesList">
-                        <c:if test="#{samplesListBean.samples.size() == 0}">
+                        <c:if test="#{samplesListBean.samplesNames.size() == 0}">
                             <li>No Samples</li>
                         </c:if>
                         <c:otherwise>
-                            <c:forEach items="#{samplesListBean.samples}" var="samples">
-                                <li class="empty-link">
-                                    <span class="fas fa-eye"></span>
-                                    #{samples.toString()}
+                            <c:forEach items="#{samplesListBean.samplesNames}" var="name">
+                                <li>
+                                    <h:outputLink value="viewsamples.xhtml">
+                                        <f:param name="name" value="#{name}"/>
+                                        <span class="fas fa-eye"></span>
+                                        #{name} (#{samplesListBean.getSamplesForName(name).sampleSize()} vars)
+                                    </h:outputLink>
                                 </li>
                             </c:forEach>
                         </c:otherwise>

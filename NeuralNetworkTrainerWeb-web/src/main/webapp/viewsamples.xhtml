@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core" 
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <h:head>
+        <title>View/Change Neural Network Samples</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link type="text/css" rel = "stylesheet" href="styles/view.css"/>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous"/>
+    </h:head>
+    <f:metadata>
+        <f:viewParam id="nameParam" name="name" 
+                     value="#{samplesBean.chosenName}"/>
+    </f:metadata>
+    <h:body>
+        <h:outputLink value="index.xhtml"><span class="fas fa-home"></span> Home page</h:outputLink>
+        <br/>
+        <br/>
+        <h:form prependId="false">
+            <h:outputLabel value="Samples: " for="selectSamples"/>
+            <h:selectOneMenu id="selectSamples" value="#{samplesBean.chosenName}">        
+                <f:selectItems value="#{samplesBean.allNames}"/>
+            </h:selectOneMenu>
+            <h:commandButton value="View" action="viewsamples?faces-redirect=true&amp;includeViewParams=true"/>
+        </h:form>
+        <br/>
+        <h:messages id="errorMessages" class="error-message"/>
+        <c:choose>
+            <c:when test="#{empty samplesBean.chosenName}">
+                <h:outputText class="prompt-message"
+                          value="Please choose samples to view."/>
+            </c:when>
+            <c:otherwise>
+                <h:panelGroup rendered="#{not samplesBean.exist}">
+                    <h:outputText class="error-message"
+                          value="Samples with name &quot;#{samplesBean.chosenName}&quot; don't exist."/>
+                    <br/>
+                    <h:outputText class="prompt-message"
+                              value="Please choose other samples."/>
+                </h:panelGroup>
+            </c:otherwise>
+        </c:choose>
+        <h:panelGroup rendered="#{samplesBean.exist}">
+            <div class="chosen-message" >Chosen samples:</div>
+            <h:form prependId="false">
+                <h:panelGrid id="samplesInfo" columns="3" cellspacing="2">
+                    <h:outputText value="Name: "/>
+                    <h:inputText id="nameInput"
+                                 value="#{samplesBean.newName}"/>
+                    <h:commandButton id="renameBtn"
+                                     rendered="#{samplesBean.exist}"
+                                     value="Rename"
+                                     action="#{samplesBean.rename}">
+                        <f:ajax execute="@form" render="@form errorMessages selectNetwork"/>
+                    </h:commandButton>
+                    <h:outputText value="Number of variables: "/>
+                    <h:outputText value="#{samplesBean.numberVariables}"/>
+                </h:panelGrid>
+            </h:form>
+        </h:panelGroup>
+        <h:panelGroup id="saveSucceded">
+            <h:outputText
+                class="save-success"
+                rendered="#{not facesContext.validationFailed and samplesBean.saved}"
+                value="New samples values saved successfully."/>
+        </h:panelGroup>
+        <br/>
+        <c:if test="#{samplesBean.exist}">
+            <div class="category-caption">Samples Values:</div>
+            <h:form prependId="false">
+                <table class="wb-table">
+                    <tr>
+                        <td></td>
+                        <c:forEach begin="1" end="#{samplesBean.numberVariables}" 
+                                   var="varNum">
+                            <td class="table-header">
+                                <h:outputText value="#{samplesBean.header[varNum - 1]}"/>
+                            </td>
+                        </c:forEach>
+                    </tr>
+                    <c:forEach begin="1" end="#{samplesBean.numberSamples}" 
+                               var="sampleNum">
+                        <tr>
+                            <td class="table-header">
+                                <h:outputText value="Sample ##{sampleNum}"/>
+                            </td>
+                            <c:forEach begin="1"
+                                       end="#{samplesBean.numberVariables}"
+                                       var="varNum">
+                                <td>
+                                    <h:inputText
+                                        class="numberInput"
+                                        converter="javax.faces.Double"
+                                        label="Sample ##{sampleNum} -- #{samplesBean.header[varNum - 1]}"
+                                        value="#{samplesBean.samplesValues[sampleNum - 1][varNum - 1]}"/>
+                                </td>
+                            </c:forEach>
+                        </tr>
+                    </c:forEach>
+                </table>
+                <br/>
+                <h:commandLink action="#{samplesBean.addSample}">
+                    <f:ajax execute="@form" render="@form errorMessages"/>
+                    Add sample
+                </h:commandLink>
+                &nbsp;
+                <h:commandLink action="#{samplesBean.removeSample}">
+                    <f:ajax execute="@form" render="@form errorMessages"/>
+                    Remove sample
+                </h:commandLink>
+                <br/>
+                <br/>
+                <h:commandButton value="Save" action="#{samplesBean.save}">
+                    <f:ajax execute="@form" render="@form errorMessages saveSucceded"/>
+                </h:commandButton>
+            </h:form>
+        </c:if>
+    </h:body>
+</html>

@@ -120,12 +120,12 @@
                 </table>
                 <h:commandLink action="#{networkEvaluateBean.addTestCase}"
                                value="Add case">
-                    <f:ajax execute="@form" render="@form"/>
+                    <f:ajax execute="@form" render="@form errorMessages"/>
                 </h:commandLink>
                 &nbsp;
                 <h:commandLink action="#{networkEvaluateBean.removeTestCase}"
                                value="Remove case">
-                    <f:ajax execute="@form" render="@form"/>
+                    <f:ajax execute="@form" render="@form errorMessages"/>
                 </h:commandLink>
                 <br/>
                 <h:commandButton value="Evaluate" action="#{networkEvaluateBean.evaluate}">

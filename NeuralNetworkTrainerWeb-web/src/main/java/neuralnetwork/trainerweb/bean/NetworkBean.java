@@ -6,8 +6,6 @@ import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.model.ArrayDataModel;
-import javax.faces.model.DataModel;
 import javax.faces.validator.ValidatorException;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -37,8 +35,6 @@ public class NetworkBean implements Serializable {
     
     private List<double[][]> weightsForLayers;
     private List<double[]> biasesForLayers;
-    
-    private List<DataModel<double[]>> weightsForLayersModels;
     
     /**
      * Load network from the repository by the name {@code name}.
@@ -90,7 +86,7 @@ public class NetworkBean implements Serializable {
     }
     
     /**
-     * Validate if network with name {@code value} exists if the repository.
+     * Validate if network with name {@code value} exists in the repository.
      * @param context JSF context.
      * @param component JSF component.
      * @param value {@code String} name of the network.
@@ -176,8 +172,8 @@ public class NetworkBean implements Serializable {
     }
     
     /**
-     * Check is a network has been loaded successfully.
-     * @return {@code true} if a networks has been loaded, {@code false} otherwise.
+     * Check if a network has been loaded successfully.
+     * @return {@code true} if a network has been loaded, {@code false} otherwise.
      */
     public boolean isExist() {
         return nn != null;
@@ -235,22 +231,6 @@ public class NetworkBean implements Serializable {
         }
         
         return weightsForLayers.get(layerNum);
-    }
-    
-    /**
-     * {@link DataModel} object holding 2D array of weights for the loaded 
-     * network between the layers with indices {@code layerNum - 1} and {@code layerNum}.
-     * @param layerNum Index of the layer to the right. {@code 0} means the first hidden
-     * layer.
-     * @return {@link DataModel} object holding 2D array of weights between 
-     * the layers or an empty array if no network has been loaded.
-     */
-    public DataModel<double[]> getWeightsModelForLayer(int layerNum) {
-        if (nn == null) {
-            return new ArrayDataModel<>();
-        }
-        
-        return weightsForLayersModels.get(layerNum);
     }
     
     /**
@@ -357,13 +337,11 @@ public class NetworkBean implements Serializable {
 
     private void initWeightsForLayers() {
         weightsForLayers = new ArrayList<>(nn.getNumberHiddenLayers() + 1);
-        weightsForLayersModels = new ArrayList<>(nn.getNumberHiddenLayers() + 1);
         // input <-> first hidden
         double[][] layerWeights = new double[nn.getNumberInputs()]
                 [nn.getHiddenLayerSize(0)];
         fillWeightsFromNetworkForLayer(layerWeights, 0);
         weightsForLayers.add(layerWeights);
-        weightsForLayersModels.add(new ArrayDataModel<>(layerWeights));
         
         // hidden layer i <-> hidden layer i+1
         for (int layerNum = 1; layerNum < nn.getNumberHiddenLayers(); layerNum++) {
@@ -371,7 +349,6 @@ public class NetworkBean implements Serializable {
                 [nn.getHiddenLayerSize(layerNum)];
             fillWeightsFromNetworkForLayer(layerWeights, layerNum);
             weightsForLayers.add(layerWeights);
-            weightsForLayersModels.add(new ArrayDataModel<>(layerWeights));
         }
         
         // last hidden layer <-> output
@@ -379,7 +356,6 @@ public class NetworkBean implements Serializable {
                 [nn.getNumberOutputs()];
         fillWeightsFromNetworkForLayer(layerWeights, nn.getNumberHiddenLayers());
         weightsForLayers.add(layerWeights);
-        weightsForLayersModels.add(new ArrayDataModel<>(layerWeights));
     }
 
     private void initBiasesForLayers() {

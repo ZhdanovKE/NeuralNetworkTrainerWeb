@@ -103,6 +103,7 @@
                                            var="idx">
                                     <td>
                                         <h:inputText
+                                            class="numberInput"
                                             converter="javax.faces.Double"
                                             label="&laquo;Neuron #{prevIdx} -- Neuron #{idx}&raquo; weight"
                                             value="#{networkBean.getWeightsForLayer(layerNum)[prevIdx - 1][idx - 1]}"/>
@@ -120,6 +121,7 @@
                                         var="idx">
                                 <td>
                                     <h:inputText
+                                        class="numberInput"
                                         converter="javax.faces.Double"
                                         label="Neuron #{idx} bias"
                                         value="#{networkBean.getBiasesForLayer(layerNum)[idx - 1]}"/>

@@ -26,6 +26,9 @@ public class NeuralNetworkRepositoryBean extends NamedObjectRepository<NamedNeur
     private NeuralNetworkFacadeLocal nnEJBFacade;
      
     public NeuralNetworkRepositoryBean() {
+        super.setOnNameChangeListener((object, oldName, newName) -> {
+            object.setName(newName);
+        });
     }
 
     @Override
@@ -70,9 +73,8 @@ public class NeuralNetworkRepositoryBean extends NamedObjectRepository<NamedNeur
     public void rename(String oldName, String newName) {
         NeuralNetworkEntity entity = nnEJBFacade.findByName(oldName);
         entity.setName(newName);
-        entity.getNetwork().setName(newName);
-        nnEJBFacade.merge(entity);
         super.onNameChange(entity.getNetwork(), oldName, newName);
+        nnEJBFacade.merge(entity);
     }
 
     @Override

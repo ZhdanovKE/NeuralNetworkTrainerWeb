@@ -72,6 +72,14 @@ public class NeuralNetworkRepositoryBean extends NamedObjectRepository<NamedNeur
     @Override
     public void rename(String oldName, String newName) {
         NeuralNetworkEntity entity = nnEJBFacade.findByName(oldName);
+        if (entity == null) {
+            throw new IllegalArgumentException("Network with name " + oldName + 
+                    " doesn't exist");
+        }
+        if (containsName(newName)) {
+            throw new IllegalArgumentException("Network with name " + newName +
+                    " already exists");
+        }
         entity.setName(newName);
         super.onNameChange(entity.getNetwork(), oldName, newName);
         nnEJBFacade.merge(entity);

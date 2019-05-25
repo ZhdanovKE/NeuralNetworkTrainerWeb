@@ -69,8 +69,8 @@ public interface NeuralNetworkFacadeLocal {
      * {@code name} from the database.
      * @param name {@link String} name of the network associated with the JPA entity
      * to be deleted.
-     * @throws IllegalArgumentException if {@code name} is null or don't correspond
-     * to any networks in the database.
+     * @throws IllegalArgumentException if {@code name} is null or doesn't correspond
+     * to any network in the database.
      */
     void remove(String name);
 

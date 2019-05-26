@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 
@@ -27,6 +28,10 @@ public class SamplesRowEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID")
     private long id;
+    
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "SAMPLES_ID")
+    private SamplesEntity samples;
     
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
@@ -51,6 +56,14 @@ public class SamplesRowEntity implements Serializable {
      */
     public void setId(long id) {
         this.id = id;
+    }
+
+    public SamplesEntity getSamples() {
+        return samples;
+    }
+
+    public void setSamples(SamplesEntity samples) {
+        this.samples = samples;
     }
     
     /**

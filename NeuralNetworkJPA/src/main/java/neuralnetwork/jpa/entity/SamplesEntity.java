@@ -1,6 +1,7 @@
 package neuralnetwork.jpa.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -59,10 +60,13 @@ public class SamplesEntity implements Serializable {
     @Column(name = "NAME")
     private String name;
     
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, 
+    @OneToMany(
+            mappedBy = "samples",
+            cascade = CascadeType.ALL, 
+            orphanRemoval = true, 
             fetch = FetchType.EAGER)
     @OrderColumn(name = "R_INDEX")
-    private List<SamplesRowEntity> samplesRows;
+    private List<SamplesRowEntity> samplesRows = new ArrayList<>();
     
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
@@ -132,6 +136,7 @@ public class SamplesEntity implements Serializable {
         samples.stream().map((row) -> {
             SamplesRowEntity sRow = new SamplesRowEntity();
             sRow.setRowValues(row);
+            sRow.setSamples(this);
             return sRow;
         }).forEachOrdered((sRow) -> {
             samplesRows.add(sRow);
@@ -139,6 +144,16 @@ public class SamplesEntity implements Serializable {
         setSamplesRows(samplesRows);
     }
 
+    public void addSamplesRow(SamplesRowEntity rowEntity) {
+        samplesRows.add(rowEntity);
+        rowEntity.setSamples(this);
+    }
+    
+    public void removeSamplesRow(SamplesRowEntity rowEntity) {
+        samplesRows.remove(rowEntity);
+        rowEntity.setSamples(null);
+    }
+    
     /**
      * Get the list of {@link SamplesRowEntity} instances stored in
      * this entity.

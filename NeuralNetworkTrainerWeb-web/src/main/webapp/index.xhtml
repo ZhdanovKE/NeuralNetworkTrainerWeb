@@ -21,6 +21,12 @@
                     'uploadBtn',
                     #{settingsBean.maxFileUploadSizeInBytes}
             );
+            var samplesUploader = new FileUploader(
+                    'samplesFileInput', 
+                    'samplesValidationErrorMsg', 
+                    'samplesUploadBtn',
+                    #{settingsBean.maxFileUploadSizeInBytes}
+            );
             var networkRemover = new NetworkRemover(
                     'deleteNNInput',
                     'deleteNNBtn'
@@ -45,7 +51,10 @@
         </nav>
         Samples: 
         <nav>
-            <a href="#" class="empty-link"><span class="fas fa-file-upload"></span> Upload</a> | 
+            <h:outputLink value="#" 
+                          onclick="document.getElementById('samplesFileInput').click()">
+                <span class="fas fa-file-upload"></span> Upload
+            </h:outputLink> | 
             <a href="viewsamples.xhtml"><span class="fas fa-eye"></span> View/Change</a>
         </nav>
         <div style="text-align: center">
@@ -63,6 +72,20 @@
             <h:commandButton id="uploadBtn" 
                              value="Upload"
                              action="#{fileUploadBean.upload}">
+            </h:commandButton>
+        </h:form>
+        <h:form prependId="false" style="display: none;"
+                enctype="multipart/form-data">
+            <h:inputFile id="samplesFileInput"
+                         value="#{samplesUploadBean.file}" 
+                         onchange="samplesUploader.handleUpload()">
+                <f:passThroughAttribute name="accept" value=".csv" />
+            </h:inputFile>
+            <h:inputText id="samplesValidationErrorMsg" 
+                         value="#{samplesUploadBean.validationErrorMsg}"/>
+            <h:commandButton id="samplesUploadBtn" 
+                             value="Upload"
+                             action="#{samplesUploadBean.upload}">
             </h:commandButton>
         </h:form>
         <table style="width: 100%;">
